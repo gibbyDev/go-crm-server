@@ -37,6 +37,9 @@ func main() {
 
 	server := server.NewServer()
 
+	// Log success message when server starts
+	log.Println("Success, server is running on http://localhost:8080")
+
 	go gracefulShutdown(server)
 
 	err := server.ListenAndServe()
