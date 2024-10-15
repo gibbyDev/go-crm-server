@@ -1,59 +1,86 @@
+// package server
+
+// import (
+// 	"net/http"
+// )
+
+// func (s *Server) RegisterRoutes() http.Handler {
+// 	mux := http.NewServeMux()
+
+// 	// Route for HelloWorld
+// 	mux.HandleFunc("/", s.HelloWorldHandler)
+
+// 	// Health check route
+// 	mux.HandleFunc("/health", s.healthHandler)
+
+// 	// Routes for user management
+// 	mux.HandleFunc("/users", s.usersHandler)
+// 	mux.HandleFunc("/users/all", s.allUsersHandler)
+// 	mux.HandleFunc("/users/", s.userByIDHandler) // Adjust as needed for dynamic ID
+
+// 	// Routes for ticket management
+// 	mux.HandleFunc("/tickets", s.createTicketHandler)        // POST: Create a ticket
+// 	mux.HandleFunc("/tickets/all", s.getAllTicketsHandler)   // GET: Retrieve all tickets
+// 	mux.HandleFunc("/tickets/", s.getTicketByIDHandler)      // GET: Retrieve a ticket by ID (dynamic)
+// 	mux.HandleFunc("/tickets/update/", s.updateTicketHandler) // PUT: Update a ticket by ID (dynamic)
+// 	mux.HandleFunc("/tickets/delete/", s.deleteTicketHandler) // DELETE: Delete a ticket by ID (dynamic)
+
+// 	return mux
+// }
+
+
 package server
 
 import (
-	"encoding/json"
-	"log"
 	"net/http"
+	"strings"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
 	mux := http.NewServeMux()
+
+	// Route for HelloWorld
 	mux.HandleFunc("/", s.HelloWorldHandler)
+
+	// Health check route
 	mux.HandleFunc("/health", s.healthHandler)
 
-	// routes for user management
-	mux.HandleFunc("/users", s.usersHandler)          
-	mux.HandleFunc("/users/all", s.allUsersHandler)   
-	mux.HandleFunc("/users/", s.userByIDHandler)     
+	// Routes for user management
+	mux.HandleFunc("/users", s.createUserHandler)        // POST: Create a user
+	mux.HandleFunc("/users/all", s.getAllUsersHandler)   // GET: Retrieve all users
+	mux.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
+		if id := strings.TrimPrefix(r.URL.Path, "/users/"); id != "" {
+			s.getUserByIDHandler(w, r, id) // Pass the ID to the handler
+		} else {
+			http.NotFound(w, r)
+		}
+	})
+
+	// Routes for ticket management
+	mux.HandleFunc("/tickets", s.createTicketHandler)        // POST: Create a ticket
+	mux.HandleFunc("/tickets/all", s.getAllTicketsHandler)   // GET: Retrieve all tickets
+	mux.HandleFunc("/tickets/", func(w http.ResponseWriter, r *http.Request) {
+		if id := strings.TrimPrefix(r.URL.Path, "/tickets/"); id != "" {
+			s.getTicketByIDHandler(w, r, id) // Pass the ID to the handler
+		} else {
+			http.NotFound(w, r)
+		}
+	})
+	mux.HandleFunc("/tickets/update/", func(w http.ResponseWriter, r *http.Request) {
+		if id := strings.TrimPrefix(r.URL.Path, "/tickets/update/"); id != "" {
+			s.updateTicketHandler(w, r, id) // Pass the ID to the handler
+		} else {
+			http.NotFound(w, r)
+		}
+	})
+	mux.HandleFunc("/tickets/delete/", func(w http.ResponseWriter, r *http.Request) {
+		if id := strings.TrimPrefix(r.URL.Path, "/tickets/delete/"); id != "" {
+			s.deleteTicketHandler(w, r, id) // Pass the ID to the handler
+		} else {
+			http.NotFound(w, r)
+		}
+	})
 
 	return mux
 }
 
-func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
-	resp := make(map[string]string)
-	resp["message"] = "Hello World"
-
-	jsonResp, err := json.Marshal(resp)
-	if err != nil {
-		log.Fatalf("error handling JSON marshal. Err: %v", err)
-	}
-
-	_, _ = w.Write(jsonResp)
-}
-
-func (s *Server) healthHandler(w http.ResponseWriter, r *http.Request) {
-	jsonResp, err := json.Marshal(s.db.Health())
-	if err != nil {
-		log.Fatalf("error handling JSON marshal. Err: %v", err)
-	}
-
-	_, _ = w.Write(jsonResp)
-}
-
-// UsersHandler logs when the /users route is accessed
-func (s *Server) usersHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("Accessed /users route")
-	w.WriteHeader(http.StatusOK) // Respond with a 200 OK status
-}
-
-// AllUsersHandler logs when the /users/all route is accessed
-func (s *Server) allUsersHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("Accessed /users/all route")
-	w.WriteHeader(http.StatusOK) // Respond with a 200 OK status
-}
-
-// UserByIDHandler logs when the /users/{id} route is accessed
-func (s *Server) userByIDHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("Accessed /users/{id} route")
-	w.WriteHeader(http.StatusOK) // Respond with a 200 OK status
-}
