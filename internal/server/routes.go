@@ -1,34 +1,3 @@
-// package server
-
-// import (
-// 	"net/http"
-// )
-
-// func (s *Server) RegisterRoutes() http.Handler {
-// 	mux := http.NewServeMux()
-
-// 	// Route for HelloWorld
-// 	mux.HandleFunc("/", s.HelloWorldHandler)
-
-// 	// Health check route
-// 	mux.HandleFunc("/health", s.healthHandler)
-
-// 	// Routes for user management
-// 	mux.HandleFunc("/users", s.usersHandler)
-// 	mux.HandleFunc("/users/all", s.allUsersHandler)
-// 	mux.HandleFunc("/users/", s.userByIDHandler) // Adjust as needed for dynamic ID
-
-// 	// Routes for ticket management
-// 	mux.HandleFunc("/tickets", s.createTicketHandler)        // POST: Create a ticket
-// 	mux.HandleFunc("/tickets/all", s.getAllTicketsHandler)   // GET: Retrieve all tickets
-// 	mux.HandleFunc("/tickets/", s.getTicketByIDHandler)      // GET: Retrieve a ticket by ID (dynamic)
-// 	mux.HandleFunc("/tickets/update/", s.updateTicketHandler) // PUT: Update a ticket by ID (dynamic)
-// 	mux.HandleFunc("/tickets/delete/", s.deleteTicketHandler) // DELETE: Delete a ticket by ID (dynamic)
-
-// 	return mux
-// }
-
-
 package server
 
 import (
