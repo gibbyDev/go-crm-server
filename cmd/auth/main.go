@@ -7,13 +7,13 @@ import (
 )
 
 func main() {
-    fmt.Println("api")
+    fmt.Println("auth")
 
     // Start a simple HTTP server
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintln(w, "API Service")
+        fmt.Fprintln(w, "Auth Service")
     })
 
-    log.Println("Starting API service on port 8080...")
-    log.Fatal(http.ListenAndServe(":8080", nil))
+    log.Println("Starting auth service on port 8081...")
+    log.Fatal(http.ListenAndServe(":8081", nil))
 }

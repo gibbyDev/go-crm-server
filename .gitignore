@@ -24,6 +24,7 @@ tmp/
 
 # .env file
 .env
+cmd/*/.env
 
 # Project build
 main
@@ -31,4 +32,25 @@ main
 
 # OS X generated file
 .DS_Store
+
+
+tailwind.config.js
+
+go.mod
+go.sum
+
+
+docker-compose.yml
+
+cmd/api/main.go.bak
+
+.air.toml
+
+Dockerfile
+
+cmd/api/Dockerfile
+
+cmd/auth/Dockerfile
+
+cmd/chat/Dockerfile
 

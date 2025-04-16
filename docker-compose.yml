@@ -1,15 +1,32 @@
+# version: "3.9"
 services:
-  psql_bp:
-    image: postgres:latest
-    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: ./cmd/api/Dockerfile
     environment:
-      POSTGRES_DB: ${BLUEPRINT_DB_DATABASE}
-      POSTGRES_USER: ${BLUEPRINT_DB_USERNAME}
-      POSTGRES_PASSWORD: ${BLUEPRINT_DB_PASSWORD}
+      - PORT=8080
     ports:
-      - "${BLUEPRINT_DB_PORT}:5432"
-    volumes:
-      - psql_volume_bp:/var/lib/postgresql/data
+      - "8080:8080"
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./cmd/auth/Dockerfile
+    environment:
+      - PORT=8081
+    ports:
+      - "8081:8081"
+
+  chat:
+    build:
+      context: .
+      dockerfile: ./cmd/chat/Dockerfile
+    environment:
+      - PORT=8082
+    ports:
+      - "8082:8082"
 
 volumes:
   psql_volume_bp:
