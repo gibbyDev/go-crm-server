@@ -1,12 +1,12 @@
 package templates
 
-templ Login(title string) {
+templ SignIn(title string) {
 	<div hx-ext="response-targets">
 		<h1>
 			Sign in to your account
 		</h1>
 		<form
-			hx-post="/login"
+			hx-post="/signin"
 			hx-trigger="submit"
 			hx-target-401="#login-error"
 		>
@@ -38,12 +38,12 @@ templ Login(title string) {
 			</button>
 			<p>
 				Don’t have an account yet?
-				<a href="/register">Register</a>
+				<a href="/signup">Register</a>
 			</p>
 		</form>
 	</div>
 }
 
-templ LoginError() {
+templ SignInError() {
 	<p>Invalid email or password</p>
 }

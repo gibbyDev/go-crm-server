@@ -5,14 +5,14 @@ import (
 	"net/http"
 )
 
-type GetSignInHandler struct{}
+type GetSignUpHandler struct{}
 
-func NewGetSignInHandler() *GetSignInHandler {
-	return &GetSignInHandler{}
+func NewGetSignUpHandler() *GetSignUpHandler {
+	return &GetSignUpHandler{}
 }
 
-func (h *GetSignInHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	c := views.SignIn("Sign In")
+func (h *GetSignUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	c := views.SignUp("Sign Up")
 	err := views.Layout(c, "My website").Render(r.Context(), w)
 
 	if err != nil {

@@ -1,10 +1,10 @@
 # Project go-crm-server
 
-One Paragraph of project description goes here
+This is a set of go microservices. Each of which are dockerized in their own containers with their own database and they all communicate with one another. The first service is an auth service for sign up, sign in, and sign out with email verification. The second is an api that handles an IT ticketing system. The third is a video & text chat app using WebRTC 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
 ## MakeFile
 
